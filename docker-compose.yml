@@ -1,0 +1,33 @@
+version: '3.7'
+services:
+  web:
+    image: azuracast/azuracast_web:latest
+    ports:
+      - "80:80"
+    volumes:
+      - azuracast_stations:/var/azuracast/stations
+      - azuracast_config:/var/azuracast/config
+      - azuracast_www:/var/azuracast/www
+    environment:
+      - MYSQL_ROOT_PASSWORD=your_password
+      - MYSQL_DATABASE=azuracast
+      - MYSQL_USER=azuracast
+      - MYSQL_PASSWORD=your_password
+    depends_on:
+      - mariadb
+
+  mariadb:
+    image: mariadb:10.6
+    environment:
+      - MYSQL_ROOT_PASSWORD=your_password
+      - MYSQL_DATABASE=azuracast
+      - MYSQL_USER=azuracast
+      - MYSQL_PASSWORD=your_password
+    volumes:
+      - db_data:/var/lib/mysql
+
+volumes:
+  azuracast_stations:
+  azuracast_config:
+  azuracast_www:
+  db_data:
